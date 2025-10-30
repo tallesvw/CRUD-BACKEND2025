@@ -1,5 +1,5 @@
 import { compare } from "bcryptjs";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import PrismaClient from "../../prisma/index.js"
 import  {} from "../../models/auth/AuthRequest.js"
 import { AuthRequest } from '../../models/auth/AuthRequest.js';
@@ -28,14 +28,13 @@ class AuthUserService {
             throw new Error("Senha Errada!");
         }
 
-        const token = sign( 
+        const token = await jwt.sign( 
             {
                 user: register?.user,
-                password: register?.password 
             },
             process.env.JWT_SECRET as string,
             {
-                subject: user?.id,
+                subject: register?.id?.toString(),
                 expiresIn: "8h"
             }
         );

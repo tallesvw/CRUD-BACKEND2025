@@ -1,5 +1,5 @@
 export interface AuthRequest {
-    user: String;
-    password: String;
+    user: string;
+    password: string;
 
 }
