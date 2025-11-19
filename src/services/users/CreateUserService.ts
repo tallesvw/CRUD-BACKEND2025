@@ -5,7 +5,7 @@ import { UserRequest } from "../../models/interfaces/UserRequest.js"
 class CreateUserService {
     async execute({ user, email, password, phone }: UserRequest){
         if(!email) {
-            throw new Error("Email incorrect");
+            throw new Error("Email incorreto");
         }
         const userAlreadyExists = await prismaClient.user.findUnique({
             where: {
@@ -14,7 +14,7 @@ class CreateUserService {
         })
 
         if(userAlreadyExists) {
-            throw new Error("Email Already exists");
+            throw new Error("Email já existe");
         }
     
         const passwordHash = await hash(password, 8);

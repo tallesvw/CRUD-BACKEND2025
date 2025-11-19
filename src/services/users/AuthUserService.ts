@@ -22,31 +22,32 @@ class AuthUserService {
             throw new Error("Usuário ou senha incorreto!");
         }
 
-        if (!(foundUser.status !== UserStatus.ATIVO)){
+        if (foundUser.status !== UserStatus.ATIVO){
             throw new Error("Conta inativa. Por favor, contate o suporte.");
             
         }
 
-        const passwordMatch = await compare(password, foundUser?.password)
+        const passwordMatch = await compare(password, foundUser.password)
         if(!passwordMatch) {
             throw new Error("Usuário ou senha incorreto!");
         }
 
-        const token = await jwt.sign( 
+        const token = jwt.sign(
             {
-                user: foundUser?.user,
+                user: foundUser.user,
             },
             process.env.JWT_SECRET as string,
             {
-                subject: foundUser?.id?.toString(),
+                subject: foundUser.id.toString(),
                 expiresIn: "8h"
             }
         );
 
         return {
-            id:foundUser?.id,
-            name: foundUser?.user,
-            token: token
+            id:foundUser.id,
+            name: foundUser.user,
+            token: token,
+            message: "Logado com sucesso!"
         }
 
     }
